@@ -1,0 +1,62 @@
+<template>
+  <header>
+    <nav id="navbar" class="navbar has-shadow is-dark" style="z-index: 90; height: 4em;">
+      <div class="navbar-brand">
+        <div class="navbar-item">
+          <div class="buttons has-addons">
+            <a id="menu-new" class="button is-danger" click.delegate="newAction()">
+              <span class="icon" style="margin-right: 0.75rem; margin-left: 0em;">
+                <i class="fas fa-lg fa-plus-square"></i>
+              </span>
+             New ${message}</a>
+            <a class="button is-danger" style="border-left: 1px solid #C88; ">
+              <span class="icon is-small">
+                <i class="fas fa-angle-down"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="navbar-start">
+        <div class="navbar-item">
+          <a class="button is-info">
+            <span class="icon is-small" style="margin-right: 0.25em; ">
+              <i class="fa fa-folder-open"></i>
+            </span>
+           Import</a>
+        </div>
+        <div class="navbar-item">
+          <a class="button is-info">
+            <span class="icon is-small" style="margin-right: 0.25em; ">
+              <i class="fa fa-play"></i>
+            </span>
+           Runner</a>
+        </div>
+      </div>
+
+      <div class="navbar-start" style="xflex: 1; xjustify-content: center;">
+        <div class="navbar-item">
+          <svg width="18" height="18" viewBox="0 0 16 16"><defs><path id="workspace-switcher" d="M2 9h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1zm8 0h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1zm0-8h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"></path></defs><use fill="#FFF" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#workspace-switcher"></use></svg>
+
+          &nbsp;&nbsp;<span class="is-size-5">Workspace 001</span>&nbsp;
+          <a class="has-text-white">
+            <span class="icon" style="padding-bottom: 0.75em;">
+              <i class="fas fa-lg fa-sort-down"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <a class="button is-danger is-rounded" style="padding-left: 0.75em; padding-right: 0.75em;">
+            <span class="icon is-small">
+              <i class="fa fa-folder-open"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+</template>

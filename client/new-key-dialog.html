@@ -1,0 +1,117 @@
+<template>
+  <ux-dialog class="modal is-active" style="z-index: 100">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head" click.trigger="controller.cancel()">
+        <p class="modal-card-title">New Key</p>
+        <button class="delete" aria-label="close"></button>
+      </header>
+      <ux-dialog-body class="modal-card-body has-text-dark">
+        <div class="field">
+          <p class="help">Keys can be used for cryptographic operations, such an encrypting data or signing a message</p>
+        </div>
+        <div class="field is-grouped">
+          <label class="label">Key Type</label>
+          <div class="control has-icons-left">
+            <div class="select">
+              <select value.bind="key.keyType" />>
+                <option>SECRET</option>
+                <option>PUBLIC</option>
+                <option>DES</option>
+                <option>AES</option>
+                <option>RSA</option>
+                <option>ECC</option>
+                <option>HMAC</option>
+              </select>
+              <span class="icon is-small is-left">
+                <i class="fas fa-key"></i>
+              </span>
+            </div>
+          </div>
+          <label class="label">Sub Type</label>
+          <div class="control has-icons-left">
+            <div class="select">
+              <select>
+                <option>ECB</option>
+                <option>CBC</option>
+                <option></option>
+                <option>AES</option>
+                <option>RSA</option>
+                <option>ECC</option>
+              </select>
+              <span class="icon is-small is-left">
+                <i class="fas fa-key"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Name</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Text input"> </div>
+        </div>
+        <div class="field">
+          <label class="label">Username</label>
+          <div class="control has-icons-left has-icons-right">
+            <input class="input is-success" type="text" placeholder="Text input" value="bulma">
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i>
+            </span>
+            <span class="icon is-small is-right">
+              <i class="fas fa-check"></i>
+            </span>
+          </div>
+          <p class="help is-success">This username is available</p>
+        </div>
+        <div class="field">
+          <label class="label">Email</label>
+          <div class="control has-icons-left has-icons-right">
+            <input class="input is-danger" type="email" placeholder="Email input" value="hello@">
+            <span class="icon is-small is-left">
+              <i class="fas fa-envelope"></i>
+            </span>
+            <span class="icon is-small is-right">
+              <i class="fas fa-exclamation-triangle"></i>
+            </span>
+          </div>
+          <p class="help is-danger">This email is invalid</p>
+        </div>
+        <div class="field">
+          <label class="label">Message</label>
+          <div class="control">
+            <textarea class="textarea" placeholder="Textarea"></textarea>
+          </div>
+        </div>
+        <div class="field">
+          <div class="control">
+            <label class="checkbox">
+              <input type="checkbox"> I agree to the
+              <a href="#">terms and conditions</a>
+            </label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="control">
+            <label class="radio">
+              <input type="radio" name="question"> Yes
+            </label>
+            <label class="radio">
+              <input type="radio" name="question"> No
+            </label>
+          </div>
+        </div>
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-link">Submit</button>
+
+            <button class="button is-warning" click.trigger="controller.cancel()">Cancel</button>
+          </div>
+        </div>
+      </ux-dialog-body>
+      <ux-dialog-footer class="modal-card-foot" click.trigger="controller.cancel()">
+        <button class="button is-success" click.trigger="controller.ok(key)">Save changes</button>
+        <button class="button" click.trigger="controller.cancel()">Cancel</button>
+      </ux-dialog-footer>
+    </div>
+  </ux-dialog>
+</template>

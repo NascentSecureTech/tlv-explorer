@@ -1,0 +1,32 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "sourceRoot": "client",
+    "sourceMap": true,
+    "allowJs": true,
+    "baseUrl": "client",
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "lib": [
+      "es2017", "dom"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "public",
+    "dist"
+  ],
+  "filesGlob": [
+    "./client/**/*.ts",
+    "./test/**/*.ts",
+    "./typings/**/*.d.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}

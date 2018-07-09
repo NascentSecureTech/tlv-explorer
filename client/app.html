@@ -1,0 +1,25 @@
+<template>
+  <require from="./tool-header-bar"></require>
+  <require from="./sidebar.html"></require>
+  <require from="./new-key-dialog.html"></require>
+  <tool-header-bar></tool-header-bar>
+  <sidebar></sidebar>
+  <section style="background-color: #FAFAFA; position: absolute; top: 4em; bottom: 0; right: 0; left: 200px;">
+    <div class="container">
+      <span class="has-text-primary">Heello</span>&nbsp;
+    </div>
+  </section>
+
+<script>
+  $(document).ready( function() {
+    $('#menu-new').click( function(e) {
+      
+    } );
+
+    $('.modal-card-head .delete, .modal-card-foot .button').click( function(e) {
+      $(this).closest('.modal').removeClass('is-active');
+    } );
+
+  })
+</script>
+</template>
