@@ -1,0 +1,110 @@
+<template>
+  <require from="./tlv-nodes/tlv-node" as="tlv-node"></require>
+  <require from="../std-components/byte-input-pane" as="byte-input-pane"></require>
+
+  <!--router-view></router-view-->
+
+  <form id="tlvx-header" class="row expanded" style="border: 2px dotted #DDD; border-radius: 5px">
+    <div class="column small-6">
+      <div class="button-group" style="padding-top: 8px; display: inline-block">
+        <a class="primary button" click.trigger="cleanupTLV()">Compact</a>
+        <a class="button success" click.trigger="reformatTLV()">Reformat</a>
+
+  <!--a class="button success" click.trigger="reformatTLV()">
+          <span class="input-group-label">$</span>
+          <input class="input-group-field" type="number">
+          <div class="input-group-button">
+            <input type="submit" class="button" value="Submit">
+          </div>
+          Reformat</a-->
+        </div>
+        <span style="width: 20px;">&nbsp;</span>
+        <div class="button-group" style="padding-top: 8px; display: inline-block; border: 1px #ddd; border-radius: 3px; padding: 3px;">
+          <a class="${tlvFormat == 'auto' ? 'primary':'secondary'} button" click.trigger="setTLVFormat('auto')">Auto</a>
+          <a class="${tlvFormat == 'ber' ? 'primary':'secondary'} button" click.trigger="setTLVFormat('ber')">BER</a>
+          <a class="${tlvFormat == 'dgi' ? 'primary':'secondary'} button" click.trigger="setTLVFormat('dgi')">DGI</a>
+          <a class="${tlvFormat == 'ctv' ? 'primary':'secondary'} button" click.trigger="setTLVFormat('ctv')">CTV</a>
+
+    <!--a class="button success" click.trigger="reformatTLV()">
+            <span class="input-group-label">$</span>
+            <input class="input-group-field" type="number">
+            <div class="input-group-button">
+              <input type="submit" class="button" value="Submit">
+            </div>
+            Reformat</a-->
+        </div>
+    </div>
+  </form>
+
+
+  <!--nav id="tlvx-sidebar">
+    <ul>
+      <li class="${mode=='decode'?'activia':''}">
+        <a href="#tlv-explorer?mode=decode"><img class="sidebar-icon" src="../../static/icons/encoder.svg"/></a>
+        <span class="tooltip">Decode</span>
+      </li>
+      <li class="${mode=='encode'?'activia':''}">
+        <a href="#tlv-explorer?mode=encode"><img class="sidebar-icon" src="../../static/icons/arena.svg"/></a>
+        <span class="tooltip">Encode</span>
+      </li>
+      <li class="${mode=='lookup'?'activia':''}">
+        <a href="#tlv-explorer?mode=lookup"><img class="sidebar-icon" src="../../static/icons/driver.svg"/></a>
+        <span class="tooltip">Lookup</span>
+      </li>
+      <li class="${mode=='dol'?'activia':''}">
+        <a href="#tlv-explorer?mode=dol"><img class="sidebar-icon" src="../../static/icons/driver.svg"/></a>
+        <span class="tooltip">DOL</span>
+      </li>
+    </ul>
+  </nav-->
+
+  <div id="tlvx-workspace">
+    <div show.bind="parseError" style="border-radius: 5px; border-width: 2px; border-style: dashed; background-color: red; color: white; font-size: 20px; position: absolute; right: 0; top: 0;">
+      <span class="xtooltip">${parseError}</span>
+    </div>
+    <!--byte-input-pane id="tlv-hex-in" bytes.bind="tlvInput"></byte-input-pane-->
+    <div id="data-in" class="hex-pane">
+      <!--div style="position: absolute; left: 20px; right: 20px; top: 20px; bottom: 20px; z-index: 50; background-xcolor: #111; opacity: 0.05; overflow: hidden; color: #888; font-size: 2rem; padding-top: 1rem" class="text-center">HEX TLV DATA</div-->
+      <textarea id="tlv-hex-in" placeholder="Type or paste TLV data here"
+        value.bind="tlvInput & debounce:300">
+      </textarea>
+    </div>
+
+    <div id="tlv-tree" class="tree-pane" if.bind="mode=='decode'">
+      <div repeat.for="info of rootTLVInfo.childTLVInfos">
+        <tlv-node tlv-info.bind="info"></tlv-node>
+      </div>
+
+      <div if.bind="rootTLVInfo.childTLVInfos.length == 0" style="height: 400px; border: 3px dotted #888; border-radius: 5px; padding: 10px;">
+        <h3><i>Explore</i> mode</h3>
+        <p>Decompose hexadecimal TLV data, and represent it as a tree.</p>
+        Context sensitive lookup, ISO / EMV and different payment-card standards</p>
+        <br/>
+        <p>try something like <a click.trigger="tlvInput = '700e 5a086271550000000001 5f340100'">700e 5a086271550000000001 5f340100</span></a>
+      </div>
+    </div>
+
+    <div id="dol-input" if.bind="mode=='dol'" class="hex-pane">
+      <textarea id="dol-in" placeholder="Type or paste hexadecimal DOL (data-object-list) here"
+        value.bind="dolInput & debounce:300">
+      </textarea>
+    </div>
+
+    <div id="dol-buffer" if.bind="mode=='dol'" class="hex-pane">
+      <textarea id="dol-in" placeholder="Type or paste hexadecimal DOL (data-object-list) here"
+        value.bind="dolBuffer & debounce:300">
+      </textarea>
+
+      <div if.bind="rootTLVInfo.childTLVInfos.length == 0" style="height: 400px; border: 3px dotted #888; border-radius: 5px; padding: 10px;">
+        <h3><i>Explore</i> mode</h3>
+        <p>Decompose TLV data, and represent it as a tree.</br>
+        <p>Context sensitive lookup, ISO / EMV and different payment-card standards</p>
+        <p>Handles standard BER, GlobalPlatform DGI and custom CTV encodings</p>
+        <br/>
+        <p>Try something like <a click.trigger="tlvInput = '700e 5a086271550000000001 5f340100'">700e 5a086271550000000001 5f340100</span></a>
+      </div>
+    </div>
+
+
+  </div>
+</template>

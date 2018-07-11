@@ -1,0 +1,10 @@
+<template>
+  <require from="./tlv-node" as="tlv-node"></require>
+
+  <div class="tree-node tree-node-open" click.trigger="onclick($event)">
+    <span>[${tag}]:${name}</span>
+    <template repeat.for="info of tlvInfo.childTLVInfos">
+      <tlv-node tlv-info.bind="info"></tlv-node>
+    </template>
+  </div>
+</template>

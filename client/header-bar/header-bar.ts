@@ -1,7 +1,7 @@
 import {DialogService} from 'aurelia-dialog';
-import {NewKeyDialog} from './new-key-dialog';
+import {NewKeyDialog} from '../tools/key-manager/new-key-dialog';
 
-export class ToolHeaderBar {
+export class HeaderBar {
   message = 'Hello Mundo!';
   static inject = [DialogService];
 
@@ -17,11 +17,11 @@ export class ToolHeaderBar {
   };
 
   newAction() {
-    this.dialogService.open({ viewModel: NewKeyDialog, model: ToolHeaderBar.key, lock: false }).whenClosed(response => {
+    this.dialogService.open({ viewModel: NewKeyDialog, model: HeaderBar.key, lock: false }).whenClosed(response => {
       if (!response.wasCancelled) {
         console.log('good - ', response.output);
 
-        ToolHeaderBar.key = Object.assign( {}, response.output );
+        HeaderBar.key = Object.assign( {}, response.output );
       } else {
         console.log('bad');
       }

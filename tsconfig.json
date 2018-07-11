@@ -16,9 +16,13 @@
       "es2017", "dom"
     ]
   },
+  "paths": {
+    "bluebird": "Promise"
+  },
   "exclude": [
     "node_modules",
     "public",
+    "labs",
     "dist"
   ],
   "filesGlob": [

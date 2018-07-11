@@ -18,7 +18,7 @@ const when = (condition, config, negativeConfig) =>
   condition ? ensureArray(config) : ensureArray(negativeConfig);
 
 // primary config:
-const title = 'Aurelia Navigation Skeleton';
+const title = 'Secure Dev Tools';
 const outDir = path.resolve(__dirname, project.platform.output);
 const srcDir = path.resolve(__dirname, 'client');
 const nodeModulesDir = path.resolve(__dirname, 'node_modules');
@@ -101,9 +101,9 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
   },
   plugins: [
     new AureliaPlugin(),
-    new ProvidePlugin({
+    /*new ProvidePlugin({
       'Promise': 'bluebird'
-    }),
+    }),*/
     new ModuleDependenciesPlugin({
       'aurelia-testing': [ './compile-spy', './view-spy' ]
     }),
@@ -123,7 +123,7 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       allChunks: true
     })),
     ...when(production, new CopyWebpackPlugin([
-      { from: 'static/favicon.ico', to: 'favicon.ico' }])),
+      { from: 'public/static/favicon.ico', to: 'favicon.ico' }])),
     ...when(analyze, new BundleAnalyzerPlugin())
   ]
 });
