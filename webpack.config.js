@@ -1,8 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-//const project = require('./aurelia_project/aurelia.json');
 const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
 const { ProvidePlugin } = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -37,7 +37,7 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
     app: ['aurelia-bootstrapper'],
     vendor: ['bluebird'],
   },
-  mode: production ? 'production' : 'development',
+  mode: /*production ? 'production' : */'development',
   output: {
     path: outDir,
     publicPath: baseUrl,
@@ -46,6 +46,12 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
     chunkFilename: production ? '[name].[chunkhash].chunk.js' : '[name].[hash].chunk.js'
   },
   performance: { hints: false },
+/*  optimization: {
+    splitChunks: {
+      chunks: 'initial',
+      name: false,
+    }
+  },*/
   devServer: {
     contentBase: "public/",
     // serve index.html for all 404 (required for push-state)
@@ -54,6 +60,20 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
   devtool: production ? 'nosources-source-map' : 'cheap-module-eval-source-map',
   module: {
     rules: [
+      /* TEST {
+        test: /\.css$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              // you can specify a publicPath here
+              // by default it use publicPath in webpackOptions.output
+              publicPath: '../'
+            }
+          },
+          "css-loader"
+        ]
+      },*/
       // CSS required in JS/TS files should use the style-loader that auto-injects it into the website
       // only when the issuer is a .js/.ts file, so the loaders are not applied inside html templates
       {
@@ -63,7 +83,7 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
           fallback: 'style-loader',
           use: cssRules
         }) : ['style-loader', ...cssRules],
-      },
+      },*/
       {
         test: /\.css$/i,
         issuer: [{ test: /\.html$/i }],
@@ -118,7 +138,7 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
         title, server, baseUrl
       }
     }),
-    ...when(extractCss, new ExtractTextPlugin({
+    ...when(extractCss, new MiniCssExtractPlugin({
       filename: production ? '[contenthash].css' : '[id].css',
       allChunks: true
     })),

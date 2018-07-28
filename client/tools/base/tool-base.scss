@@ -1,0 +1,72 @@
+@import '../../app/layout.scss';
+
+$toolHeaderHeight: 4rem;
+
+.tool {
+  background-color: #d9EDf7;
+  color: #3a87ad;
+
+  .tool-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $toolHeaderHeight;
+    nav {
+      background: #ccc;
+      border-bottom: 1px #eee;
+      z-index: 50;
+    }
+  }
+
+  .tool-area {
+    position: absolute;
+    top: $toolHeaderHeight;
+    left: 0;
+    right: 0;
+    min-height: 800px;
+    background: #D9EDF7;
+    color: #3A87AD;
+    padding: 1rem;
+  }
+}
+
+.tool-panel {
+  .panel-heading {
+    font-size: 14px;
+    //font-weight: bold;
+
+    padding-top: 0;
+    padding-bottom: 0;
+
+    .navbar {
+      min-height: 2.5rem;
+    }
+
+    .navbar-item, .navbar-brand {
+      min-height: 0;
+      padding: 0;
+    }
+
+    .navbar-item .icon:only-child {
+      margin-left: -0.5rem;
+      margin-right: 0;
+      margin-top: -1px;
+    }
+  }
+
+  .panel-block {
+    padding: 0;
+
+    &:focus {
+      border-color: rgba(82, 168, 236, 0.8);
+      transition: border linear 0.2s, box-shadow linear 0.2s;
+    }
+
+    &:focus {
+      transition: border linear 0.2s, box-shadow linear 0.2s;
+      outline: 0;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+    }
+  }
+}
