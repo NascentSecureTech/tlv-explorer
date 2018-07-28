@@ -1,0 +1,65 @@
+<template>
+  <section class="panel">
+    <header class="panel-heading has-background-grey-light">
+      <div class="tabs">
+        <ul repeat.for="tab of 5">
+          <li class="${(selectedTab == tab) ? 'is-active':''}">
+            <a click.delegate="selectedTab = tab">Byte ${tab+1}</a>
+          </li>
+        </ul>
+      </div>
+    </header>
+    <section repeat.for="i of 5" if.bind="(i<5)" css="display: ${(i == selectedTab)?'block':'none'}">
+      <p class="panel-heading" if.bind="(i<5)" style="padding: 0.5em; background-color: #ccc;">
+        <b>${ (i==0)?'Transaction Type Capability':(i==1)?'Transaction Type Capability #':(i==2)?'Terminal Data Input Capability':(i==3)?'Terminal Data Output Capability':(i==4)?'Terminal Data Output Capability':''}</b>
+      </p>
+      <div class="panel-block">
+        <table class="tvr"><tbody>
+          <tr><th>b8</th><th>b7</th><th>b6</th><th>b5</th><th>b4</th><th>b3</th><th>b2</th><th>b1</th><th>Description</th></tr>
+          <tr repeat.for="j of 8">
+            <td>${(j==0)?1:' '}</td><td>${(j==1)?1:' '}</td><td>${(j==2)?1:' '}</td><td>${(j==3)?1:' '}</td>
+                <td>${(j==4)?1:' '}</td><td>${(j==5)?1:' '}</td><td>${(j==6)?1:' '}</td><td>${(j==7)?1:' '}</td>
+                <td><span class.bind="hasBit(i,j) ? 'bgset' : 'bgunset'">${bitNames[i][j]}</span></td>
+          </tr>
+        </tbody></table>
+      </div>
+    </section>
+  </section>
+
+  <div class="columns is-multiline" if.bind="0">
+    <template repeat.for="i of 6">
+      <div class="column is-6" style="min-width: 800px">
+        <nav class="panel">
+          <p class="panel-heading " if.bind="(i<5)" style="padding: 0.25em; background-color: #ccc;">
+            ${(i<5)?'Byte '+(i+1)+': ':''}
+            ${ (i==0)?'Transaction Type Capability':(i==1)?'Transaction Type Capability #':(i==2)?'Terminal Data Input Capability':(i==3)?'Terminal Data Output Capability':(i==4)?'Terminal Data Output Capability':''}
+          </p>
+          <div if.bind="(i<5)">
+            <table class="tvr">
+            <tbody><tr><th>b8</th><th>b7</th><th>b6</th><th>b5</th><th>b4</th><th>b3</th><th>b2</th><th>b1</th><th>Description</th></tr>
+            <tr repeat.for="j of 8">
+              <td>${(j==0)?1:' '}</td><td>${(j==1)?1:' '}</td><td>${(j==2)?1:' '}</td><td>${(j==3)?1:' '}</td>
+                  <td>${(j==4)?1:' '}</td><td>${(j==5)?1:' '}</td><td>${(j==6)?1:' '}</td><td>${(j==7)?1:' '}</td>
+                  <td>
+                    <span class="${hasBit(i,j,updateCounter) ? 'bgset' : ''}">${bitNames[i][j]}</span>
+                  </td>
+              <!--label class="panel-block" >
+                <input type="checkbox" model.bind="bitToIndex(i,j)" checked.bind="tvrBit">${bitNames[i][j]}</input>
+              </label-->
+            </tr>
+
+            <!--tr><td><span id="os2ewel">1</span></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><span id="os2ewem" class="bgset">Offline data authentication was not performed</span></td></tr>
+            <tr><td></td><td><span id="os2ewen">0</span></td><td></td><td></td><td></td><td></td><td></td><td></td><td><span id="os2eweo" class="bgunset">SDA failed</span></td></tr>
+            <tr><td></td><td></td><td><span id="os2ewep">0</span></td><td></td><td></td><td></td><td></td><td></td><td><span id="os2eweq" class="bgunset">ICC data missing</span></td></tr>
+            <tr><td></td><td></td><td></td><td><span id="os2ewer">0</span></td><td></td><td></td><td></td><td></td><td><span id="os2ewes" class="bgunset">Card appears on terminal exception file</span></td></tr>
+            <tr><td></td><td></td><td></td><td></td><td><span id="os2ewet">0</span></td><td></td><td></td><td></td><td><span id="os2eweu" class="bgunset">DDA failed</span></td></tr>
+            <tr><td></td><td></td><td></td><td></td><td></td><td><span id="os2ewev">0</span></td><td></td><td></td><td><span id="os2ewew" class="bgunset">CDA failed</span></td></tr>
+            <tr><td></td><td></td><td></td><td></td><td></td><td></td><td><span id="os2ewex">0</span></td><td></td><td><span id="os2ewey" class="bgunset">RFU</span></td></tr>
+            <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><span id="os2ewez">0</span></td><td><span id="os2ewf0" class="bgunset">RFU</span></td></tr-->
+            </tbody></table>
+          </div>
+        </nav>
+      </div>
+    </template>
+  </div>
+</template>

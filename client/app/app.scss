@@ -1,0 +1,26 @@
+@import "./layout.scss";
+
+.header-bar {
+  height: $headerHeight;
+}
+
+.tool {
+  position: absolute;
+  top: $headerHeight;
+  bottom: 0;
+  right: 0;
+  left: $sidebarWidth;
+
+  background-color: #FA0000;
+}
+
+.sidebar {
+  position: absolute;
+  top: $headerHeight;
+  height: 100%;
+  bottom: 0;
+  left: 0;
+  width: $sidebarWidth;
+
+  background-color: #FAFAFA;
+}

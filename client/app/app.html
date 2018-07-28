@@ -1,15 +1,10 @@
 <template>
   <require from="../header-bar/header-bar"></require>
-  <require from="../sidebar.html"></require>
+  <require from="../sidebar/sidebar.html"></require>
   <require from="../tools/tlv-explorer/tlv-explorer" as="tlv-explorer"></require>
 
   <header-bar></header-bar>
   <sidebar></sidebar>
-  <section style="background-color: #FAFAFA; position: absolute; top: 4em; bottom: 0; right: 0; left: 200px;">
-    <div class="container has-background-primary">
-      <router-view>
-        <span class="has-text-primary">Heello</span>&nbsp;
-      </router-view>
-    </div>
-  </section>
+  <router-view>
+  </router-view>
 </template>

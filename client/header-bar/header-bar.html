@@ -1,24 +1,39 @@
-<template>
+<template class="header-bar">
   <header>
-    <nav id="navbar" class="navbar has-shadow is-dark" style="z-index: 90; height: 4em;">
-      <div class="navbar-brand">
+    <nav class="navbar header-bar is-dark" style="z-index: 90;">
+      <!--div class="navbar-brand">
         <div class="navbar-item">
           <div class="buttons has-addons">
             <a id="menu-new" class="button is-danger" click.delegate="newAction()">
-              <span class="icon" style="margin-right: 0.75rem; margin-left: 0em;">
+              <span class="icon" style="margin-right: 0.75rem; margin-left: 0em;" >
                 <i class="fas fa-lg fa-plus-square"></i>
               </span>
              New ${message}</a>
-            <a class="button is-danger" style="border-left: 1px solid #C88; ">
+            <a class="button is-danger" style="border-left: 1px solid #C88;" click.delegate="toggleNewDropdown(true)" blur.trigger="toggleNewDropdown(false)">
               <span class="icon is-small">
                 <i class="fas fa-angle-down"></i>
               </span>
             </a>
+            <div class="navbar-dropdown" show.bind="newDropDown">
+              <a class="navbar-item">
+                Overview
+              </a>
+              <a class="navbar-item">
+                Elements
+              </a>
+              <a class="navbar-item">
+                Components
+              </a>
+              <hr class="navbar-divider">
+              <div class="navbar-item">
+                Version 0.7.1
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </div-->
 
-      <div class="navbar-start">
+      <!--div class="navbar-start">
         <div class="navbar-item">
           <a class="button is-info">
             <span class="icon is-small" style="margin-right: 0.25em; ">
@@ -33,7 +48,7 @@
             </span>
            Runner</a>
         </div>
-      </div>
+      </div-->
 
       <div class="navbar-start" style="xflex: 1; xjustify-content: center;">
         <div class="navbar-item">
@@ -54,13 +69,13 @@
 
       <div class="navbar-end">
         <div class="navbar-item">
-          <a class="button is-danger is-rounded" style="padding-left: 0.75em; padding-right: 0.75em;">
+          <a class="button is-success is-rounded" style="padding-left: 0.75em; padding-right: 0.75em;">
             <span class="icon is-small">
-              <i class="fa fa-folder-open"></i>
+              <i class="fa fa-bars"></i>
             </span>
           </a>
         </div>
       </div>
-    </nav>
+    </nav-->
   </header>
 </template>

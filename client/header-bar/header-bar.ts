@@ -16,6 +16,11 @@ export class HeaderBar {
     keyType: "PUBLIC"
   };
 
+  newDropDown: boolean;
+  toggleNewDropdown( showDropDown: boolean ) {
+    this.newDropDown = showDropDown;
+  }
+
   newAction() {
     this.dialogService.open({ viewModel: NewKeyDialog, model: HeaderBar.key, lock: false }).whenClosed(response => {
       if (!response.wasCancelled) {

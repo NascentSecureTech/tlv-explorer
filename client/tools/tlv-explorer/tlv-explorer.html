@@ -1,42 +1,293 @@
 <template>
   <require from="./tlv-nodes/tlv-node" as="tlv-node"></require>
   <require from="../std-components/byte-input-pane" as="byte-input-pane"></require>
+  <require from="./tlv-details-panel" as="tlv-details-panel"></require>
 
-  <!--router-view></router-view-->
+  <main id="tlvx" class="tool">
 
-  <form id="tlvx-header" class="row expanded" style="border: 2px dotted #DDD; border-radius: 5px">
-    <div class="column small-6">
-      <div class="button-group" style="padding-top: 8px; display: inline-block">
-        <a class="primary button" click.trigger="cleanupTLV()">Compact</a>
-        <a class="button success" click.trigger="reformatTLV()">Reformat</a>
-
-  <!--a class="button success" click.trigger="reformatTLV()">
-          <span class="input-group-label">$</span>
-          <input class="input-group-field" type="number">
-          <div class="input-group-button">
-            <input type="submit" class="button" value="Submit">
+    <header class="tool-header">
+      <nav class="navbar is-light">
+        <div class="navbar-brand">
+          <div class="navbar-item">
+            <span class="icon is-large has-text-info">
+              <i class="fa fa-lg fa-wrench"></i>
+            </span>
+            <span class="subtitle is-3">
+              TLV Explorer
+            </span>
           </div>
-          Reformat</a-->
+          <div class="navbar-item">
+          </div>
         </div>
-        <span style="width: 20px;">&nbsp;</span>
-        <div class="button-group" style="padding-top: 8px; display: inline-block; border: 1px #ddd; border-radius: 3px; padding: 3px;">
-          <a class="${tlvFormat == 'auto' ? 'primary':'secondary'} button" click.trigger="setTLVFormat('auto')">Auto</a>
-          <a class="${tlvFormat == 'ber' ? 'primary':'secondary'} button" click.trigger="setTLVFormat('ber')">BER</a>
-          <a class="${tlvFormat == 'dgi' ? 'primary':'secondary'} button" click.trigger="setTLVFormat('dgi')">DGI</a>
-          <a class="${tlvFormat == 'ctv' ? 'primary':'secondary'} button" click.trigger="setTLVFormat('ctv')">CTV</a>
 
-    <!--a class="button success" click.trigger="reformatTLV()">
-            <span class="input-group-label">$</span>
-            <input class="input-group-field" type="number">
-            <div class="input-group-button">
-              <input type="submit" class="button" value="Submit">
+        <div class="navbar-start" style="width: 150px;">
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              <span class="icon is-large has-text-success">
+                <i class="fa fa-lg fa-book"></i>
+              </span>
+              EMV
+            </a>
+
+            <div class="navbar-dropdown has-background-grey-darker">
+              <div class="menu" style="padding: 0.5rem">
+                <p class="menu-label">
+                  EMV
+                </p>
+                <ul class="menu-list">
+                  <li><a>EMV 4.3</a></li>
+                  <li><a>M/Chip</a></li>
+                  <li><a>VSDC</a></li>
+                </ul>
+                <p class="menu-label">
+                  Contactless
+                </p>
+                <ul class="menu-list">
+                  <li><a>Kernel 2</a></li>
+                  <li><a>Kernel 3</a></li>
+                </ul>
+              </div>
             </div>
-            Reformat</a-->
+
+            <!--div class="buttons">
+              <a class="button is-primary" click.trigger="cleanupTLV()">Compact</a>
+              <a class="button is-success" click.trigger="reformatTLV()">Reformat</a>
+            </div-->
+          </div>
+
         </div>
-    </div>
-  </form>
 
+        <!-- Right side -->
+        <div class="navbar-end">
+          <div class="navbar-item">
+            <div class="select">
+              <select>
+                <option>EMV</option>
+                <option>M/Chip</option>
+                <option>VSDC</option>
+              </select>
+            </div>
+          </div>
+          <div class="navbar-item">
+            <div class="buttons has-addons" xstyle="padding-top: 8px; display: inline-block; border: 1px #ddd; border-radius: 3px; padding: 3px;">
+              <!--a class="button ${tlvFormat == 'auto' ? 'is-active is-primary':'is-secondary'}" click.trigger="setTLVFormat('auto')">Auto</a-->
+              <a class="button ${tlvFormat == 'ber' ? 'is-active is-primary':'is-secondary'}" click.trigger="setTLVFormat('ber')">BER</a>
+              <a class="button ${tlvFormat == 'dgi' ? 'is-active is-primary':'is-secondary'}" click.trigger="setTLVFormat('dgi')">DGI</a>
+              <a class="button ${tlvFormat == 'ctv' ? 'is-active is-primary':'is-secondary'}" click.trigger="setTLVFormat('ctv')">CTV</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
 
+    <section class="tool-area" style="">
+      <div show.bind="parseError" style="border-radius: 5px; border-width: 2px; border-style: dashed; background-color: red; color: white; font-size: 20px; position: absolute; right: 0; top: 0;">
+        <span class="xtooltip">${parseError}</span>
+      </div>
+
+      <section class="panel tool-panel">
+        <header class="panel-heading">
+          <nav class="navbar is-light">
+            <div class="navbar-brand">
+              <div class="navbar-item">
+                <span class="icon is-medium has-border">
+                  <i class="fa fa-terminal"></i>
+                </span>
+              </div>
+              <div class="navbar-item">
+                Byte Data Entry
+              </div>
+            </div>
+
+            <!--div class="navbar-start">
+              <div class="navbar-item">
+                <div class="buttons">
+                  <a class="button is-primary is-small" click.trigger="cleanupTLV()">Compact</a>
+                  <a class="button is-success is-small" click.trigger="reformatTLV()">Reformat</a>
+                </div>
+              </div>
+            </div-->
+
+            <div class="navbar-end">
+              <div class="navbar-item" style="margin-right: 2em;">
+                <div class="buttons has-addons is-small" >
+                  <!--a class="button is-small ${dataFormat == 'auto' ? 'is-active is-primary':'is-secondary'}" click.trigger="setDataFormat('auto')">Auto</a-->
+                  <a class="button is-small ${dataFormat == 'hex' ? 'is-active is-primary':'is-secondary'}" click.trigger="setDataFormat('hex')">HEX</a>
+                  <a class="button is-small ${dataFormat == 'base64' ? 'is-active is-primary':'is-secondary'}" click.trigger="setDataFormat('base64')">BASE64</a>
+                  <a class="button is-small ${dataFormat == 'text' ? 'is-active is-primary':'is-secondary'}" click.trigger="setDataFormat('text')">TEXT</a>
+                </div>
+              </div>
+
+              <a class="navbar-item">
+                <span class="icon is-medium has-border">
+                  <i class="fa fa-lg fa-plus-square"></i>
+                </span>
+              </a>
+              <a class="navbar-item">
+                <span class="icon is-medium has-border">
+                  <i class="fa fa-folder-open"></i>
+                </span>
+              </a>
+              <a class="navbar-item">
+                <span class="icon is-medium has-border">
+                  <i class="fa fa-play"></i>
+                </span>
+              </a>
+              <div class="navbar-item">
+                <div class="dropdown is-right">
+                  <div class="dropdown-trigger">
+                    <button class="button is-small" aria-haspopup="true" aria-controls="dropdown-menu">
+                      <span>...</span>
+                    </button>
+                  </div>
+                  <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                      <a href="#" class="dropdown-item">
+                        Dropdown item
+                      </a>
+                      <a class="dropdown-item">
+                        Other dropdown item
+                      </a>
+                      <a href="#" class="dropdown-item is-active">
+                        Active dropdown item
+                      </a>
+                      <a href="#" class="dropdown-item">
+                        Other dropdown item
+                      </a>
+                      <hr class="dropdown-divider">
+                      <a href="#" class="dropdown-item">
+                        With a divider
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </header>
+
+        <section class="panel-block byte-input-pane" ref="byteInputElement">
+          <textarea placeholder="Type or paste TLV data here"
+            value.bind="tlvInput & debounce:300" ref="byteInputElement">
+          </textarea>
+        </section>
+      </section>
+
+      <section class="tool-panel panel">
+        <header class="panel-heading">
+          <nav class="navbar is-light">
+            <div class="navbar-brand">
+              <div class="navbar-item">
+                <span class="icon is-medium has-border">
+                  <i class="fa fa-wrench"></i>
+                </span>
+              </div>
+              <div class="navbar-item">
+                Decoded TLV
+              </div>
+            </div>
+          </nav>
+        </header>
+
+        <section class="panel-block">
+          <div class="tree-pane" if.bind="mode=='decode'">
+            <div repeat.for="info of rootTLVInfo.childTLVInfos">
+              <tlv-node tlv-info.bind="info"></tlv-node>
+            </div>
+
+            <div if.bind="rootTLVInfo.childTLVInfos.length == 0" style="height: 400px; border: 3px dotted #888; border-radius: 5px; padding: 10px;">
+              <h3><i>Explore</i> mode</h3>
+              <p>Decompose hexadecimal TLV data, and represent it as a tree.</p>
+              Context sensitive lookup, ISO / EMV and different payment-card standards</p>
+              <br/>
+              <p>try something like <a click.trigger="tlvInput = '9505 3399AA55FF 700e 5a086271550000000001 5f340100'">700e 5a086271550000000001 5f340100</span></a>
+            </div>
+          </div>
+
+          <div id="dol-input" if.bind="mode=='dol'" class="hex-pane">
+            <textarea id="dol-in" placeholder="Type or paste hexadecimal DOL (data-object-list) here"
+              value.bind="dolInput & debounce:300">
+            </textarea>
+          </div>
+
+          <div id="dol-buffer" if.bind="mode=='dol'" class="hex-pane">
+            <textarea id="dol-in" placeholder="Type or paste hexadecimal DOL (data-object-list) here"
+              value.bind="dolBuffer & debounce:300">
+            </textarea>
+
+            <div if.bind="rootTLVInfo.childTLVInfos.length == 0" >
+              <h3><i>Explore</i> mode</h3>
+              <p>Decompose TLV data, and represent it as a tree.</br>
+              <p>Context sensitive lookup, ISO / EMV and different payment-card standards</p>
+              <p>Handles standard BER, GlobalPlatform DGI and custom CTV encodings</p>
+              <br/>
+              <p>Try something like <a click.trigger="tlvInput = '700e 5a086271550000000001 5f340100'">700e 5a086271550000000001 5f340100</span></a>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="tool-panel panel">
+        <header class="panel-heading">
+          <nav class="navbar is-light">
+            <div class="navbar-brand">
+              <div class="navbar-item">
+                <span class="icon is-medium has-border">
+                  <i class="fa fa-sign-out-alt"></i>
+                </span>
+              </div>
+              <div class="navbar-item">
+                TLV Details
+              </div>
+            </div>
+          </nav>
+        </header>
+        <section class="panel-block" style="padding: 0.5rem; display: block;">
+          <div class="field has-addons">
+            <p class="control">
+              <a class="button is-static" style="width: 8rem">
+                <span class="icon"><i class="fas fa-tag"></i></span>
+                <span><b>Tag</b></span>
+              </a>
+            </p>
+            <p class="control">
+              <input class="input has-background-light" readonly type="text" value="${selectedTLVInfo.tlv.tagAsHex}">
+            </p>
+            <p class="control is-expanded">
+              <input class="input has-background-light" readonly type="text" placeholder="Description" value="TVR - Terminal Verification Results">
+            </p>
+            <!--p class="control">
+              <a class="button" onclick="alert('clicked')">
+                <span class="icon"><i class="fas fa-edit"></i></span>
+              </a>
+            </p-->
+          </div>
+
+          <div class="field has-addons">
+            <p class="control">
+              <a class="button is-static" style="width: 8rem" >
+                <span class="icon"><i class="fas fa-file-alt"></i></span>
+                <span><b>Value</b></span>
+              </a>
+            </p>
+            <p class="control has-icons-right is-expanded">
+              <input class="input has-background-light" readonly type="text" value="${selectedTLVInfo.tlv.value.toString()}">
+              <span class="icon is-medium is-right">
+              </span>
+            </p>
+            <!--p class="control">
+              <a class="button" onclick="alert('clicked')">
+                <span class="icon"><i class="fas fa-edit"></i></span>
+              </a>
+            </p-->
+          </div>
+        </section>
+        <section class="panel-block" style="padding: 0.5rem">
+          <tlv-details-panel tlv-info.bind="selectedTLVInfo" if.bind="selectedTLVInfo"></tlv-details-panel>
+        </section>
+      </section>
+    </section>
+  </main>
   <!--nav id="tlvx-sidebar">
     <ul>
       <li class="${mode=='decode'?'activia':''}">
@@ -57,54 +308,4 @@
       </li>
     </ul>
   </nav-->
-
-  <div id="tlvx-workspace">
-    <div show.bind="parseError" style="border-radius: 5px; border-width: 2px; border-style: dashed; background-color: red; color: white; font-size: 20px; position: absolute; right: 0; top: 0;">
-      <span class="xtooltip">${parseError}</span>
-    </div>
-    <!--byte-input-pane id="tlv-hex-in" bytes.bind="tlvInput"></byte-input-pane-->
-    <div id="data-in" class="hex-pane">
-      <!--div style="position: absolute; left: 20px; right: 20px; top: 20px; bottom: 20px; z-index: 50; background-xcolor: #111; opacity: 0.05; overflow: hidden; color: #888; font-size: 2rem; padding-top: 1rem" class="text-center">HEX TLV DATA</div-->
-      <textarea id="tlv-hex-in" placeholder="Type or paste TLV data here"
-        value.bind="tlvInput & debounce:300">
-      </textarea>
-    </div>
-
-    <div id="tlv-tree" class="tree-pane" if.bind="mode=='decode'">
-      <div repeat.for="info of rootTLVInfo.childTLVInfos">
-        <tlv-node tlv-info.bind="info"></tlv-node>
-      </div>
-
-      <div if.bind="rootTLVInfo.childTLVInfos.length == 0" style="height: 400px; border: 3px dotted #888; border-radius: 5px; padding: 10px;">
-        <h3><i>Explore</i> mode</h3>
-        <p>Decompose hexadecimal TLV data, and represent it as a tree.</p>
-        Context sensitive lookup, ISO / EMV and different payment-card standards</p>
-        <br/>
-        <p>try something like <a click.trigger="tlvInput = '700e 5a086271550000000001 5f340100'">700e 5a086271550000000001 5f340100</span></a>
-      </div>
-    </div>
-
-    <div id="dol-input" if.bind="mode=='dol'" class="hex-pane">
-      <textarea id="dol-in" placeholder="Type or paste hexadecimal DOL (data-object-list) here"
-        value.bind="dolInput & debounce:300">
-      </textarea>
-    </div>
-
-    <div id="dol-buffer" if.bind="mode=='dol'" class="hex-pane">
-      <textarea id="dol-in" placeholder="Type or paste hexadecimal DOL (data-object-list) here"
-        value.bind="dolBuffer & debounce:300">
-      </textarea>
-
-      <div if.bind="rootTLVInfo.childTLVInfos.length == 0" style="height: 400px; border: 3px dotted #888; border-radius: 5px; padding: 10px;">
-        <h3><i>Explore</i> mode</h3>
-        <p>Decompose TLV data, and represent it as a tree.</br>
-        <p>Context sensitive lookup, ISO / EMV and different payment-card standards</p>
-        <p>Handles standard BER, GlobalPlatform DGI and custom CTV encodings</p>
-        <br/>
-        <p>Try something like <a click.trigger="tlvInput = '700e 5a086271550000000001 5f340100'">700e 5a086271550000000001 5f340100</span></a>
-      </div>
-    </div>
-
-
-  </div>
 </template>

@@ -2,11 +2,15 @@ import { bindable, autoinject } from 'aurelia-framework';
 import { /*Router, */activationStrategy } from 'aurelia-router';
 import { TLVDatabase, TLVDatabaseEntry, RootTLVInfo, TLVInfo, TLV } from './tlv-database';
 import { ByteArray } from '@cryptographix/sim-core';
+import * as autosize from 'autosize';
+import { tags } from './tlv-database/emv-db';
 
 import './tlv-explorer.scss';
 
 type TLVXMode = "decode" | "encode" | "lookup" | "dol";
 type TLVXFormat = "auto" | "ber" | "dgi" | "ctv";
+
+type DataFormat = "auto" | "hex" | "base64" | "text";
 
 @autoinject()
 export class TLVExplorer {
@@ -20,11 +24,10 @@ export class TLVExplorer {
     this.tlvDatabase = new TLVDatabase();
     this.rootTLVInfo = new RootTLVInfo(this.tlvDatabase);
 
-    let entries = [
-      new TLVDatabaseEntry(0x70, "Public Data Template", ""),
-      new TLVDatabaseEntry(0x5A, "Application PAN", ""),
-      new TLVDatabaseEntry(0x5F34, "PAN Sequence", ""),
-    ];
+    let entries = [];
+    Object.keys(tags).forEach( (t:any) => {
+      entries.push( new TLVDatabaseEntry(t, tags[t].name, "") );
+    } );
 
     this.tlvDatabase.databaseEntries = this.tlvDatabase.databaseEntries.concat(entries);
 
@@ -60,13 +63,37 @@ export class TLVExplorer {
     //    console.log(JSON.stringify(params));
   }
 
-  dropper: Element;
+  byteInputElement: Element;
 
   attached() {
-    console.log('attach: ' + this.mode);
-    //var elem = new (<any>Foundation.Dropdown)($(this.dropper));
+    function getAll(selector) {
+       return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
+     }
 
-    //(<any>$(document)).foundation('dropdown', 'reflow');
+    var $dropdowns = getAll('.dropdown:not(.is-hoverable)');
+
+    if ($dropdowns.length > 0) {
+      $dropdowns.forEach(function ($el) {
+        $el.addEventListener('click', function (event) {
+          event.stopPropagation();
+          $el.classList.toggle('is-active');
+        });
+      });
+
+      document.addEventListener('click', function () {
+        closeDropdowns();
+      });
+    }
+
+    function closeDropdowns() {
+      $dropdowns.forEach(function ($el) {
+        $el.classList.remove('is-active');
+      });
+    }
+
+    autosize(this.byteInputElement);
+
+    console.log('attach: ' + this.mode);
   }
   bind() {
     console.log('bind: ' + this.mode);
@@ -194,11 +221,25 @@ export class TLVExplorer {
       return;
     }
 
+    if ( this.rootTLVInfo.childTLVInfos.length ) {
+
+      this.selectedTLVInfo = this.rootTLVInfo.childTLVInfos[0];
+
+      //new TLVInfo(this.tlvDatabase, tlv, this.rootTLVInfo.encoding, 1);
+    }
+
   }
+
+  selectedTLVInfo: TLVInfo;
 
   // private doEncode() {
   //
   // }
+  @bindable() dataFormat: DataFormat = "hex";
+  setDataFormat(dataFormat: string) {
+    this.dataFormat = TLVXParams.convertDataFormat(dataFormat);
+    this.refresh();
+  }
 
   tlvInputChanged(newValue: string) {
 
@@ -285,6 +326,14 @@ export class TLVXParams implements TLVXParamHash {
     const values: TLVXFormat[] = ["auto", "ber", "dgi", "ctv"];
 
     let index = values.indexOf(value.toLowerCase() as TLVXFormat);
+
+    return values[index < 0 ? 0 : index];
+  }
+
+  static convertDataFormat(value: string): DataFormat {
+    const values: DataFormat[] = ["auto", "hex", "base64", "text"];
+
+    let index = values.indexOf(value.toLowerCase() as DataFormat);
 
     return values[index < 0 ? 0 : index];
   }
