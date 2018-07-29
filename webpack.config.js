@@ -79,11 +79,11 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       {
         test: /\.css$/i,
         issuer: [{ not: [{ test: /\.html$/i }] }],
-        use: extractCss ? ExtractTextPlugin.extract({
+        use: /*extractCss ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: cssRules
-        }) : ['style-loader', ...cssRules],
-      },*/
+        }) :*/ ['style-loader', ...cssRules],
+      },
       {
         test: /\.css$/i,
         issuer: [{ test: /\.html$/i }],
@@ -143,7 +143,7 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       allChunks: true
     })),
     ...when(production, new CopyWebpackPlugin([
-      { from: 'public/static/favicon.ico', to: 'favicon.ico' }])),
+      { from: 'client/static/favicon.ico', to: 'favicon.ico' }])),
     ...when(analyze, new BundleAnalyzerPlugin())
   ]
 });

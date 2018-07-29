@@ -8,6 +8,9 @@ import {PLATFORM} from 'aurelia-pal';
 // remove out if you don't want a Promise polyfill (remove also from webpack.config.js)
 //Bluebird.config({ warnings: { wForgottenReturn: false } });
 
+//import '@fortawesome/fontawesome-free/css/fontawesome.css';
+//import 'bulma/css/bulma.css';
+
 export function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()

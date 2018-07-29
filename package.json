@@ -15,11 +15,11 @@
     "aurelia-dialog": "^1.0.0-rc.2.0.0",
     "aurelia-polyfills": "^1.3.0",
     "autosize": "^4.0.2",
-    "bulma": "^0.7.1",
     "jquery": "^3.3.1"
   },
   "peerDependencies": {},
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.2.0",
     "@types/autosize": "^3.0.6",
     "@types/jest": "^22.2.0",
     "@types/jquery": "^3.3.4",
@@ -30,6 +30,7 @@
     "aurelia-testing": "^1.0.0-beta.4.0.0",
     "aurelia-webpack-plugin": "^3.0.0-rc.1",
     "bluebird": "^3.5.1",
+    "bulma": "^0.7.1",
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
     "del": "^3.0.0",
