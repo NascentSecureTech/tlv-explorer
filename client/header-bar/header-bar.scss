@@ -1,0 +1,11 @@
+@import '../app/layout.scss';
+
+.header-bar nav {
+  height: $headerHeight;
+  z-index: 90;
+}
+
+.header-bar a.button.is-rounded {
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+}

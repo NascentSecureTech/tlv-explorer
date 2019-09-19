@@ -1,6 +1,8 @@
 import {DialogService} from 'aurelia-dialog';
 import {NewKeyDialog} from '../tools/key-manager/new-key-dialog';
 
+import './header-bar.scss';
+
 export class HeaderBar {
   message = 'Hello Mundo!';
   static inject = [DialogService];

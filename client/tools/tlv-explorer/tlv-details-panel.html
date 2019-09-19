@@ -19,7 +19,7 @@
           <tr repeat.for="j of 8">
             <td>${(j==0)?1:' '}</td><td>${(j==1)?1:' '}</td><td>${(j==2)?1:' '}</td><td>${(j==3)?1:' '}</td>
                 <td>${(j==4)?1:' '}</td><td>${(j==5)?1:' '}</td><td>${(j==6)?1:' '}</td><td>${(j==7)?1:' '}</td>
-                <td><span class.bind="hasBit(i,j) ? 'bgset' : 'bgunset'">${bitNames[i][j]}</span></td>
+                <td><span class.bind="hasBit(i,j,tlvInfo) ? 'bgset' : 'bgunset'">${bitNames[i][j]}</span></td>
           </tr>
         </tbody></table>
       </div>
