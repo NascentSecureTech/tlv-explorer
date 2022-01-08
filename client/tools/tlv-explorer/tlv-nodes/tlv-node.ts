@@ -1,5 +1,5 @@
 import { bindable } from 'aurelia-framework';
-import { TLVInfo, TLVDatabaseEntry} from '../tlv-database';
+import { TLVInfo, TLVDatabaseEntry} from '../tlv-database/mod';
 import * as $ from 'jquery';
 
 export class TLVNodeVM {

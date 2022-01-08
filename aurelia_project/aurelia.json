@@ -1,5 +1,5 @@
 {
-  "name": "test",
+  "name": "bundle",
   "type": "project:application",
   "paths": {
     "root": "client",
@@ -11,21 +11,95 @@
   },
   "transpiler": {
     "id": "typescript",
-    "fileExtension": ".ts"
+    "fileExtension": ".ts",
+    "dtsSource": [
+      "./types/**/*.d.ts"
+    ],
+    "source": [
+      "client/**/*.ts"
+    ]
   },
-  "build": {
-    "options": {
-      "server": "dev",
-      "extractCss": "prod",
-      "coverage": false
-    }
+  "markupProcessor": {
+    "source": [
+      "client/**/*.html"
+    ]
+  },
+  "cssProcessor": {
+    "source": [
+      "client/**/*.scss"
+    ]
+  },
+  "jsonProcessor": {
+    "source": [
+      "client/**/*.json"
+    ]
   },
   "platform": {
-    "hmr": false,
-    "open": false,
-    "port": 8080,
+    "port": 9000,
     "host": "localhost",
+    "open": false,
+    "index": "index.html",
+    "baseDir": ".",
     "output": "dist"
   },
-  "packageManager": "yarn"
+  "build": {
+    "targets": [
+      {
+        "port": 9000,
+        "index": "index.html",
+        "baseDir": ".",
+        "output": "dist"
+      }
+    ],
+    "options": {
+      "minify": "stage & prod",
+      "sourcemaps": "dev & stage",
+      "rev": "prod",
+      "cache": "dev & stage"
+    },
+    "bundles": [
+      {
+        "name": "app-bundle.js",
+        "source": [
+          "**/*"
+        ]
+      },
+      {
+        "name": "vendor-bundle.js",
+        "prepend": [
+          "node_modules/whatwg-fetch/dist/fetch.umd.js",
+          "node_modules/promise-polyfill/dist/polyfill.min.js",
+          "node_modules/alameda/alameda.js"
+        ],
+        "dependencies": [
+          "aurelia-bootstrapper",
+          "aurelia-loader-default",
+          "aurelia-pal-browser",
+          {
+            "name": "aurelia-testing",
+            "env": "dev"
+          },
+          "text"
+        ]
+      }
+    ],
+    "copyFiles": {
+      "node_modules/@fortawesome/fontawesome-free/webfonts/*": "@fortawesome/fontawesome-free/webfonts"
+    },
+    "loader": {
+      "type": "require",
+      "configTarget": "vendor-bundle.js",
+      "includeBundleMetadataInConfig": "auto",
+      "plugins": [
+        {
+          "name": "text",
+          "extensions": [
+            ".html",
+            ".css"
+          ],
+          "stub": false
+        }
+      ]
+    }
+  }
 }

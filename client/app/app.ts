@@ -1,8 +1,5 @@
 import {Router, RouterConfiguration} from 'aurelia-router';
 
-import './app.scss';
-
-
 export class App {
   router: Router;
 

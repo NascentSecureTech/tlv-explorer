@@ -1,4 +1,4 @@
-import { TLVDatabase, TLVDatabaseEntry, TLV, TLVParser } from '.';
+import { TLVDatabase, TLVDatabaseEntry, TLV, TLVParser } from './mod';
 import { ByteArray } from '@cryptographix/sim-core';
 
 function buildTLVInfos(tlvDatabase: TLVDatabase, bytes: ByteArray, encoding: number, expandDepth: number) {

@@ -1,11 +1,9 @@
 import { bindable, autoinject } from 'aurelia-framework';
 import { /*Router, */activationStrategy } from 'aurelia-router';
-import { TLVDatabase, TLVDatabaseEntry, RootTLVInfo, TLVInfo, TLV } from './tlv-database';
+import { TLVDatabase, TLVDatabaseEntry, RootTLVInfo, TLVInfo, TLV } from './tlv-database/mod';
 import { ByteArray } from '@cryptographix/sim-core';
-import * as autosize from 'autosize';
+import autosize from 'autosize';
 import { tags } from './tlv-database/emv-db';
-
-import './tlv-explorer.scss';
 
 type TLVXMode = "decode" | "encode" | "lookup" | "dol";
 type TLVXFormat = "auto" | "ber" | "dgi" | "ctv";

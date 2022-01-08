@@ -1,42 +1,30 @@
-
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
+    "esModuleInterop": true,
+    "declaration": false,
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "sourceRoot": "client",
     "sourceMap": true,
-    "allowJs": true,
-    "baseUrl": "client",
-    "skipLibCheck": true,
-    "outDir": "dist",
+    "target": "es5",
     "lib": [
-      "es2017", "dom"
-    ]
+      "es2015",
+      "dom"
+    ],
+    "moduleResolution": "node",
+    "baseUrl": "src",
+    "resolveJsonModule": true,
+    "allowJs": true
   },
-  "paths": {
-    "promise-polyfill": "Promise"
-  },
-  "exclude": [
-    "node_modules",
-    "public",
-    "labs",
-    "tools",
-    "tlv-viewer",
-   "tmp",
-    "./*.js",
-    "dist"
-  ],
-  "filesGlob": [
-    "./client/**/*.ts",
-    "./test/**/*.ts",
-    "./typings/**/*.d.ts"
+  "include": [
+    "client",
+    "test"
   ],
   "atom": {
     "rewriteTsconfig": false
   }
 }
-

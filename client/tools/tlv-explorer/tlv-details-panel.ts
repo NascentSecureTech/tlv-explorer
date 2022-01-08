@@ -1,5 +1,5 @@
 import {BindingEngine, autoinject, bindable, ICollectionObserverSplice} from 'aurelia-framework';
-import { TLVInfo } from './tlv-database';
+import { TLVInfo } from './tlv-database/mod';
 
 @autoinject
 export class TLVDetailsPanel {
